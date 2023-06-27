@@ -1,3 +1,20 @@
+# Master thesis code Jesse Kassai
+This README is copied from the original source (https://github.com/yjh0410/new-YOLOv1_PyTorch/blob/master/models/yolo.py), only this block is added to give additional explanations for the thesis research. 
+The data can be downloaded via the instructions in this file, but for open set recognition, a split needs to be made into the datasets. 
+
+- With the file "open_test_set.py" you can select the classes you want to keep in the open set evaluation and the classes you need to keep for training the model on the open-set setting. For this you need to uncomment the commented part of this code and comment the uncommented part of this code.
+- After the first step you need to use "annot_remove.py" to filter out the annotations for the classes that are not in the open-set evaluation and open-set training anymore.
+- After making the splits you can use the file "convert.py" to match the train.txt, trainval.txt and test.txt files with the annotations that are now changed because of the open-set conversion. For this you need to change the file path of line 35 to the aforementioned files. 
+
+To switch between the various modes in open set training and evaluation & closed-set training and evaluation, there are a few settings that needs to be adjusted. 
+- In the file "yolo.py", you need to set the parameter "open" to True. Also in these parameters you need to set the mode to "oh" (original model), "neck" (hyperbolic neck model) or "hyp" (hyperbolic head model). For open-set you also need to adjust this in "train_open.py" at line 159.
+- In the file "voc0712.py", you need to change the "VOC_ROOT" path to ```path_to_dir + "/VOCdevkit"``` for training and  to ```path_to_dir + "/VOCdevkit/VOC2007OPENPART2.2"``` for evaluation. Also in this file, you need to set the right VOC_CLASSES for both training and evaluation by commenting out the right classes.
+- In the file "vocapi_evaluator.py", you an set the confidence threshold at line 177. Also to switch between closed- and open-set setting, you need to switch between lines 37-41 and 44-48 respectively.
+- In the file "eval.py", you need to set the right amount of classes corresponding to the number of classes used for the task you are executing (for example: 3 if you are evaluating on open-set setting with 3 unseen classses).
+
+To train on closed set (Pascal VOC: voc, MS COCO: coco),  you run the following command: ```python train.py --cuda -d voc```
+To train on open set (Pascal VOC: voc, MS COCO: coco),  you run the following command: ```python train_open.py --cuda -d voc```
+
 # new-YOLOv1_PyTorch
 In this project, you can enjoy: 
 - a new version of yolov1
